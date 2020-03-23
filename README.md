@@ -15,3 +15,6 @@ Redmine time recorderは作業時間を対話式cliで登録するためのツ�
 
 現在、とりあえず動くバージョンです。  
 入力値のエラーチェックやチケットが多いときのページネーションにも対応していません。
+
+## Licence
+This software is released under the MIT License, see LICENSE.txt.
