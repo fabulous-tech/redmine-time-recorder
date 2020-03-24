@@ -7,18 +7,27 @@ import (
 	"strconv"
 
 	"github.com/fabulous-tech/go-redmine"
+	"github.com/fabulous-tech/redmine-time-recorder/internal/pkg/config"
 )
 
 func main() {
-	var (
-		endpoint string
-		apikey   string
-	)
-	flag.StringVar(&endpoint, "e", "", "Redmine Endpoint URL")
-	flag.StringVar(&apikey, "k", "", "Redmine API Key")
+	var conf config.Config
+
+	flag.StringVar(&conf.Endpoint, "e", "", "Redmine Endpoint URL")
+	flag.StringVar(&conf.Apikey, "k", "", "Redmine API Key")
 
 	flag.Parse()
-	c := redmine.NewClient(endpoint, apikey)
+	if conf.Endpoint == "" {
+		fmt.Println("RedmineのURLを入力してください。")
+		fmt.Scan(&conf.Endpoint)
+	}
+
+	if conf.Apikey == "" {
+		fmt.Println("API Keyを入力してください。")
+		fmt.Scan(&conf.Apikey)
+	}
+
+	c := redmine.NewClient(conf.Endpoint, conf.Apikey)
 	pj, err := c.GetProjects()
 	if err != nil {
 		fmt.Println(err)
@@ -81,7 +90,7 @@ func main() {
 		ActivityId: at,
 		Comments:   "",
 	}
-	fmt.Println(req)
+
 	_, err = c.CreateTimeEntry(req)
 
 	if err != nil {
